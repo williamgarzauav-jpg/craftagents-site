@@ -414,7 +414,92 @@
     </div>
   </section>
 
-  <!-- ANCHOR:FAQ_AND_FOUNDER (inserted in its own commit) -->
+  <!-- ===== FAQ + FOUNDER / TRUST ===== -->
+  <style>
+    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    .faq-item { border: 1px solid var(--line); border-radius: 12px; background: #fff; overflow: hidden; }
+    .faq-item summary { list-style: none; cursor: pointer; padding: 18px 22px; font-weight: 700; color: var(--navy); font-size: 16.5px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: "+"; color: var(--accent-deep); font-size: 22px; font-weight: 700; line-height: 1; }
+    .faq-item[open] summary::after { content: "\2013"; }
+    .faq-item .faq-a { padding: 0 22px 20px; color: var(--muted); font-size: 15.5px; }
+    .faq-item .faq-a a { color: var(--accent-deep); }
+
+    .founder { background: var(--bg-soft); }
+    .founder-card { max-width: 760px; margin: 0 auto; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 34px 36px; display: flex; gap: 26px; align-items: flex-start; }
+    .avatar { flex-shrink: 0; width: 64px; height: 64px; border-radius: 50%; background: var(--navy); color: var(--accent); font-weight: 800; font-size: 22px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.02em; }
+    .founder-text h3 { color: var(--navy); font-size: 20px; margin-bottom: 4px; }
+    .founder-text .role { color: var(--accent-deep); font-weight: 600; font-size: 14px; margin-bottom: 12px; }
+    .founder-text p { color: var(--text); font-size: 16px; margin-bottom: 12px; }
+    .founder-text .contact { color: var(--muted); font-size: 14.5px; }
+    .founder-text .contact a { color: var(--accent-deep); }
+    .trust-strip { max-width: 760px; margin: 28px auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; color: var(--muted); font-size: 14.5px; }
+    .trust-strip span { display: inline-flex; align-items: center; gap: 8px; }
+    .trust-strip .dot { color: var(--accent); font-weight: 800; }
+
+    @media (max-width: 760px) {
+      .founder-card { flex-direction: column; align-items: center; text-align: center; }
+    }
+  </style>
+
+  <section class="faq">
+    <div class="wrap">
+      <div class="eyebrow">Straight answers</div>
+      <h2 class="section-title">Questions roofers actually ask</h2>
+      <div class="faq-list">
+        <!-- ROOFING: FAQ content -->
+        <details class="faq-item">
+          <summary>Do I need to be technical?</summary>
+          <div class="faq-a">Not at all. We build it and install it for you. It goes on your site with a single line of code, and if you'd rather not touch anything, we'll handle that part too.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What if it tells a customer something wrong?</summary>
+          <div class="faq-a">It only answers from your real business information, never makes up pricing, and when it isn't sure about something it points the homeowner to your phone number instead of guessing. You're in control of what it knows.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Will it work with my existing website?</summary>
+          <div class="faq-a">Yes. It works on Wix, Squarespace, WordPress, GoDaddy, or just about any site. No rebuild, no switching anything. We add it to what you already have.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What does it cost after the free month?</summary>
+          <div class="faq-a">$250 a month. No setup fee, no contract, cancel anytime. If it isn't bringing you leads, you stop, no strings.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Who sees my customers' information?</summary>
+          <div class="faq-a">It goes straight to you. We never sell it or reuse it, and the only services that touch it are the ones needed to run the assistant. You can read the details in our <a href="privacy.html">privacy policy</a>.</div>
+        </details>
+        <!-- /ROOFING -->
+      </div>
+    </div>
+  </section>
+
+  <section class="founder">
+    <div class="wrap">
+      <div class="eyebrow">Who's behind it</div>
+      <h2 class="section-title">A real person, not a faceless software company</h2>
+      <div class="founder-card">
+        <div class="avatar" aria-hidden="true">WG</div>
+        <div class="founder-text">
+          <!-- ROOFING: founder note (Will's real background) -->
+          <h3>Will Garza</h3>
+          <div class="role">Founder, CraftAgents &middot; Georgetown, TX</div>
+          <p>I spent 2024 doing drone roof inspections for contractors across Central Texas, so I've seen firsthand how many good leads slip through the cracks after hours. CraftAgents is me, a real local operator you can actually reach, not a call center or a faceless software company.</p>
+          <p>When you work with me you get straight answers and a tool I set up, test, and stand behind personally.</p>
+          <!-- /ROOFING -->
+          <div class="contact">
+            Reach me directly: <a href="mailto:will@craftagents.net">will@craftagents.net</a>
+            <!-- NEEDS WILL: business phone number to add here for stronger trust -->
+          </div>
+        </div>
+      </div>
+      <div class="trust-strip">
+        <span><span class="dot">&bull;</span> Built in Georgetown, TX</span>
+        <span><span class="dot">&bull;</span> Real founder, real support</span>
+        <span><span class="dot">&bull;</span> No contract, cancel anytime</span>
+      </div>
+    </div>
+  </section>
+  <!-- ===== /FAQ + FOUNDER ===== -->
 
   <!-- ===== HOW WE HANDLE YOUR DATA ===== -->
   <section class="data-blurb" id="data">
