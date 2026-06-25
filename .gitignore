@@ -1,0 +1,23 @@
+# Secrets / env
+.env
+.env.*
+*.key
+*.pem
+
+# Dependencies (in case a build step is added later)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build / dist output
+dist/
+build/
+.cache/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
