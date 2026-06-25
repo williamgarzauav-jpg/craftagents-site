@@ -3,8 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CraftAgents — Never Miss Another Lead</title>
-  <meta name="description" content="CraftAgents builds custom AI assistants that answer your website visitors 24/7 and capture every lead straight to your phone." />
+
+  <!--
+    ============================================================
+    CraftAgents marketing site — v1
+    ============================================================
+    CONVENTIONS:
+    - Roofing-specific copy is wrapped in <!-- ROOFING: ... --> markers
+      so it's easy to find and swap when expanding to other verticals.
+    - The on-page chat is a SCRIPTED MOCK (see the demo widget section).
+      There is no backend. Do not imply one.
+    - BOOKING_URL and the business phone are PLACEHOLDERS pending Will.
+    SECURITY:
+    - CSP + referrer policy are set via meta below. Headers that cannot be
+      set via <meta> (X-Frame-Options, X-Content-Type-Options, etc.) are in
+      the Netlify `_headers` file at the repo root.
+    ============================================================
+  -->
+
+  <!-- Security: Content Security Policy (meta-supported subset).
+       'unsafe-inline' is required only because styles/scripts are inline in this
+       v1. When we move CSS/JS to external files, tighten this to drop it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; form-action 'self' mailto:; object-src 'none';" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <title>CraftAgents — Never Miss Another Roofing Lead</title>
+  <meta name="description" content="CraftAgents builds a custom AI assistant for roofing contractors that answers homeowners 24/7 and texts every new lead straight to your phone, even after hours." />
+
   <style>
     :root {
       --navy: #0f1c2e;
@@ -20,76 +45,54 @@
     html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased;
     }
     .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .narrow { max-width: 760px; }
 
     /* Nav */
-    nav {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 22px 0;
-    }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; }
     .logo { font-weight: 800; font-size: 22px; color: var(--navy); letter-spacing: -0.02em; }
     .logo span { color: var(--accent); }
     .nav-cta {
       background: var(--navy); color: #fff; text-decoration: none;
-      padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 15px;
-      transition: background 0.15s;
+      padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 15px; transition: background 0.15s;
     }
     .nav-cta:hover { background: var(--navy-soft); }
 
     /* Hero */
-    .hero {
-      background: linear-gradient(160deg, var(--navy) 0%, var(--navy-soft) 100%);
-      color: #fff; padding: 96px 0 104px; text-align: center;
-    }
-    .hero h1 {
-      font-size: clamp(34px, 5vw, 56px); font-weight: 800;
-      letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 22px;
-    }
+    .hero { background: linear-gradient(160deg, var(--navy) 0%, var(--navy-soft) 100%); color: #fff; padding: 92px 0 100px; text-align: center; }
+    .hero h1 { font-size: clamp(34px, 5vw, 56px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 22px; }
     .hero h1 .hl { color: var(--accent); }
-    .hero p {
-      font-size: clamp(17px, 2vw, 20px); color: #c3cedd;
-      max-width: 620px; margin: 0 auto 36px;
-    }
-    .btn {
-      display: inline-block; background: var(--accent); color: var(--navy);
-      text-decoration: none; font-weight: 700; font-size: 17px;
-      padding: 16px 34px; border-radius: 10px; transition: transform 0.12s, background 0.15s;
-    }
+    .hero p { font-size: clamp(17px, 2vw, 20px); color: #c3cedd; max-width: 640px; margin: 0 auto 36px; }
+    .btn { display: inline-block; background: var(--accent); color: var(--navy); text-decoration: none; font-weight: 700; font-size: 17px; padding: 16px 34px; border-radius: 10px; transition: transform 0.12s, background 0.15s; border: none; cursor: pointer; }
     .btn:hover { background: var(--accent-deep); transform: translateY(-1px); }
+    .cta-row { display: flex; gap: 18px; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .cta-fallback { color: #c3cedd; font-size: 15px; }
+    .cta-fallback a { color: var(--accent); }
     .hero .sub { margin-top: 16px; font-size: 14px; color: #8ea0b8; }
 
     /* Sections */
     section { padding: 84px 0; }
-    .eyebrow {
-      text-transform: uppercase; letter-spacing: 0.12em; font-size: 13px;
-      font-weight: 700; color: var(--accent-deep); margin-bottom: 12px; text-align: center;
-    }
-    .section-title {
-      font-size: clamp(26px, 3.5vw, 38px); font-weight: 800; color: var(--navy);
-      text-align: center; letter-spacing: -0.02em; margin-bottom: 14px;
-    }
-    .section-lead {
-      text-align: center; color: var(--muted); max-width: 580px;
-      margin: 0 auto 56px; font-size: 18px;
-    }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 13px; font-weight: 700; color: var(--accent-deep); margin-bottom: 12px; text-align: center; }
+    .section-title { font-size: clamp(26px, 3.5vw, 38px); font-weight: 800; color: var(--navy); text-align: center; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .section-lead { text-align: center; color: var(--muted); max-width: 600px; margin: 0 auto 56px; font-size: 18px; }
+
+    /* Pain / cost section */
+    .pain { background: var(--navy); color: #fff; }
+    .pain .section-title { color: #fff; }
+    .pain .section-lead { color: #c3cedd; }
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 40px; }
+    .stat { text-align: center; padding: 28px 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; }
+    .stat .big { font-size: 40px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
+    .stat .label { color: #c3cedd; font-size: 15px; margin-top: 6px; }
+    .pain-note { text-align: center; color: #c3cedd; max-width: 660px; margin: 0 auto; font-size: 17px; }
 
     /* Value cards */
     .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-    .card {
-      background: #fff; border: 1px solid #e6eaf0; border-radius: 14px;
-      padding: 32px 28px; transition: box-shadow 0.18s, transform 0.18s;
-    }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 32px 28px; transition: box-shadow 0.18s, transform 0.18s; }
     .card:hover { box-shadow: 0 12px 32px rgba(15,28,46,0.08); transform: translateY(-3px); }
-    .card .icon {
-      width: 46px; height: 46px; border-radius: 10px;
-      background: rgba(246,166,35,0.14); color: var(--accent-deep);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; margin-bottom: 18px;
-    }
+    .card .icon { width: 46px; height: 46px; border-radius: 10px; background: rgba(246,166,35,0.14); color: var(--accent-deep); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; }
     .card h3 { font-size: 19px; color: var(--navy); margin-bottom: 8px; }
     .card p { color: var(--muted); font-size: 15.5px; }
 
@@ -97,18 +100,20 @@
     .how { background: var(--bg-soft); }
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
     .step { text-align: center; padding: 0 8px; }
-    .step .num {
-      width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: #fff;
-      font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 18px;
-    }
+    .step .num { width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: #fff; font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
     .step h3 { font-size: 18px; color: var(--navy); margin-bottom: 8px; }
     .step p { color: var(--muted); font-size: 15.5px; }
+
+    /* Data handling */
+    .data-blurb { background: var(--bg-soft); }
+    .data-card { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 12px; padding: 32px 34px; max-width: 760px; margin: 0 auto; }
+    .data-card p { color: var(--text); font-size: 17px; }
+    .data-card a { color: var(--accent-deep); }
 
     /* CTA band */
     .cta-band { background: var(--navy); color: #fff; text-align: center; }
     .cta-band h2 { font-size: clamp(26px, 3.5vw, 38px); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; }
-    .cta-band p { color: #c3cedd; font-size: 18px; max-width: 520px; margin: 0 auto 34px; }
+    .cta-band p { color: #c3cedd; font-size: 18px; max-width: 540px; margin: 0 auto 34px; }
 
     /* Footer */
     footer { padding: 40px 0; border-top: 1px solid var(--line); }
@@ -116,12 +121,12 @@
     .foot-inner .logo { font-size: 18px; }
     footer a { color: var(--muted); text-decoration: none; font-size: 15px; }
     footer a:hover { color: var(--navy); }
-    .copyright { color: #9aa7b6; font-size: 14px; }
+    .foot-meta { color: #9aa7b6; font-size: 14px; }
 
     @media (max-width: 760px) {
-      .cards, .steps { grid-template-columns: 1fr; }
+      .cards, .steps, .stat-row { grid-template-columns: 1fr; }
       section { padding: 60px 0; }
-      .hero { padding: 72px 0 80px; }
+      .hero { padding: 70px 0 78px; }
     }
   </style>
 </head>
@@ -130,73 +135,135 @@
   <div class="wrap">
     <nav>
       <div class="logo">Craft<span>Agents</span></div>
-      <a class="nav-cta" href="#contact">Book a Demo</a>
+      <a class="nav-cta js-book" href="#contact">Book a Demo</a>
     </nav>
   </div>
 
+  <!-- ROOFING: hero headline + subhead -->
   <header class="hero">
     <div class="wrap">
-      <h1>Never miss another <span class="hl">lead</span>.</h1>
-      <p>CraftAgents builds a custom AI assistant for your website that answers customer questions 24/7 and sends every new lead straight to your phone, even after hours.</p>
-      <a class="btn" href="#contact">Book a 10-minute demo</a>
+      <h1>Never miss another <span class="hl">roofing lead</span>.</h1>
+      <p>When a homeowner with a leaking or hail-damaged roof calls after hours, they get your voicemail, then they call the next roofer. CraftAgents puts an assistant on your website that answers them 24/7 and texts their name and number straight to your phone.</p>
+      <div class="cta-row">
+        <a class="btn js-book" href="#contact">Book a 10-minute demo</a>
+        <span class="cta-fallback">or email <a href="mailto:will@craftagents.net?subject=CraftAgents%20Demo">will@craftagents.net</a></span>
+      </div>
       <div class="sub">No setup fee. No contract. First month free.</div>
     </div>
   </header>
+  <!-- /ROOFING -->
 
+  <!-- ===== PAIN / COST OF MISSED CALLS ===== -->
+  <section class="pain">
+    <div class="wrap">
+      <div class="eyebrow" style="color:var(--accent)">The cost of a missed call</div>
+      <!-- ROOFING: pain framing -->
+      <h2 class="section-title">Storms don't wait for business hours</h2>
+      <p class="section-lead">The leads you never hear about are the ones that hurt the most. Here's the math most roofers never run.</p>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="big">~62%</div>
+          <div class="label">of calls to contractors go unanswered (industry studies)</div>
+        </div>
+        <div class="stat">
+          <div class="big">$8k&ndash;$15k+</div>
+          <div class="label">what a single roof replacement is worth in Central Texas</div>
+        </div>
+        <div class="stat">
+          <div class="big">6 figures</div>
+          <div class="label">a year, if you miss just one job a month after hours</div>
+        </div>
+      </div>
+      <p class="pain-note">A homeowner whose roof is leaking at 9pm isn't going to wait until morning. They call the next name on Google. Every one of those is a job you already paid to advertise for, walking out the door because no one picked up. At $250/month, the assistant pays for itself if it saves you one job a year. It will save you far more.</p>
+      <!-- /ROOFING -->
+    </div>
+  </section>
+
+  <!-- ===== WHAT IT DOES ===== -->
   <section>
     <div class="wrap">
       <div class="eyebrow">What it does</div>
-      <h2 class="section-title">Your website should be working when you can't</h2>
-      <p class="section-lead">Most visitors who don't get an answer right away leave and call someone else. CraftAgents makes sure that doesn't happen.</p>
+      <h2 class="section-title">Your website, working when you're on a roof</h2>
+      <p class="section-lead">It's not a phone tree and it's not a generic chatbot. It's trained on your roofing business and built to do one thing: turn visitors into leads in your phone.</p>
       <div class="cards">
+        <!-- ROOFING: value props -->
         <div class="card">
           <div class="icon">&#9889;</div>
-          <h3>Answers instantly, 24/7</h3>
-          <p>It responds to customer questions in seconds, day or night, in your business's own voice, using your real services and info.</p>
+          <h3>Answers homeowners 24/7</h3>
+          <p>Storm damage, metal vs. shingle, insurance claims, your service areas, in your company's voice, day or night, in seconds.</p>
         </div>
         <div class="card">
           <div class="icon">&#128241;</div>
-          <h3>Captures every lead</h3>
-          <p>The moment someone's interested, it grabs their name and number and texts it straight to you, so no lead ever slips to voicemail.</p>
+          <h3>Texts you every lead</h3>
+          <p>The second a homeowner's ready, it grabs their name and number and sends it straight to your phone. No lead hits voicemail.</p>
         </div>
         <div class="card">
-          <div class="icon">&#128295;</div>
-          <h3>Built for your business</h3>
-          <p>Custom-built on your services and installed on your site in minutes. You run your business, it handles the front desk.</p>
+          <div class="icon">&#127968;</div>
+          <h3>Built on your roofing business</h3>
+          <p>Your services, your service area, your warranties and brands. Installed on your existing site in minutes, nothing for you to manage.</p>
         </div>
+        <!-- /ROOFING -->
       </div>
     </div>
   </section>
 
+  <!-- ANCHOR:DEMO_WIDGET (inserted in its own commit) -->
+
+  <!-- ===== HOW IT WORKS ===== -->
   <section class="how">
     <div class="wrap">
       <div class="eyebrow">How it works</div>
       <h2 class="section-title">Live on your site in three steps</h2>
       <div class="steps">
+        <!-- ROOFING: steps -->
         <div class="step">
           <div class="num">1</div>
           <h3>We build it</h3>
-          <p>We create your assistant around your real services, service area, and the questions your customers actually ask.</p>
+          <p>We train it on your roofing services, your service area, and the questions homeowners actually ask you.</p>
         </div>
         <div class="step">
           <div class="num">2</div>
           <h3>We install it</h3>
-          <p>It goes on your existing website with a single line of code. Takes about ten minutes, and we handle it for you.</p>
+          <p>One line of code on your existing site, Wix, GoDaddy, WordPress, whatever you've got. We handle it. Takes about ten minutes.</p>
         </div>
         <div class="step">
           <div class="num">3</div>
           <h3>You get leads</h3>
-          <p>From then on, every captured lead lands in your phone automatically. Nothing for you to manage.</p>
+          <p>From then on, every captured lead lands in your phone automatically. You keep doing roofs.</p>
         </div>
+        <!-- /ROOFING -->
       </div>
     </div>
   </section>
 
+  <!-- ANCHOR:FAQ_AND_FOUNDER (inserted in its own commit) -->
+
+  <!-- ===== HOW WE HANDLE YOUR DATA ===== -->
+  <section class="data-blurb" id="data">
+    <div class="wrap">
+      <div class="eyebrow">How we handle your data</div>
+      <h2 class="section-title">Your customers' info belongs to you</h2>
+      <!--
+        DATA-HANDLING BLURB (plain-English, reusable in sales conversations too).
+        Kept in sync with the standalone copy at /data-handling-blurb.txt
+      -->
+      <div class="data-card">
+        <p>Your customers' information belongs to you, full stop. When a homeowner chats with your assistant, their name and number go straight to you and nowhere else. We never sell, rent, or reuse your data or your customers' data. The only services that ever touch it are the ones needed to run the assistant, like the AI provider that powers the conversation and the secure tool that delivers the lead to you. You can ask us to delete any data at any time. Full details are in our <a href="privacy.html">privacy policy</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
   <section class="cta-band" id="contact">
     <div class="wrap">
-      <h2>See it working on a page that looks like your site</h2>
-      <p>Ten minutes, no pressure. If it doesn't pull in leads, you pay nothing and walk away.</p>
-      <a class="btn" href="mailto:will@craftagents.net?subject=CraftAgents%20Demo">Email us to book a demo</a>
+      <!-- ROOFING: closing CTA -->
+      <h2>See it answer a hail-damage call at 9pm</h2>
+      <p>Ten minutes, no pressure. If it doesn't bring you leads, you pay nothing and walk away.</p>
+      <!-- /ROOFING -->
+      <div class="cta-row">
+        <a class="btn js-book" href="mailto:will@craftagents.net?subject=CraftAgents%20Demo">Book a 10-minute demo</a>
+        <span class="cta-fallback">or email <a href="mailto:will@craftagents.net?subject=CraftAgents%20Demo">will@craftagents.net</a></span>
+      </div>
     </div>
   </section>
 
@@ -204,9 +271,33 @@
     <div class="wrap foot-inner">
       <div class="logo">Craft<span>Agents</span></div>
       <a href="mailto:will@craftagents.net">will@craftagents.net</a>
-      <div class="copyright">&copy; 2026 CraftAgents. AI assistants for service businesses.</div>
+      <a href="privacy.html">Privacy Policy</a>
+      <div class="foot-meta">Built in Georgetown, TX &middot; &copy; 2026 CraftAgents</div>
     </div>
   </footer>
+
+  <script>
+    // ============================================================
+    // Booking link wiring
+    // BOOKING_URL is a PLACEHOLDER pending Will's Cal.com link.
+    // While it's unset, all "book" buttons fall back to the email link
+    // (the mailto fallback is also shown visibly next to each button).
+    // ============================================================
+    var BOOKING_URL = "REPLACE_WITH_CALCOM_LINK"; // NEEDS WILL: real Cal.com booking link
+    var EMAIL_FALLBACK = "mailto:will@craftagents.net?subject=CraftAgents%20Demo";
+
+    (function wireBooking() {
+      var url = (BOOKING_URL && BOOKING_URL !== "REPLACE_WITH_CALCOM_LINK") ? BOOKING_URL : EMAIL_FALLBACK;
+      var buttons = document.querySelectorAll(".js-book");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].setAttribute("href", url);
+        if (url !== EMAIL_FALLBACK) {
+          buttons[i].setAttribute("target", "_blank");
+          buttons[i].setAttribute("rel", "noopener");
+        }
+      }
+    })();
+  </script>
 
 </body>
 </html>
