@@ -13,7 +13,7 @@
       so it's easy to find and swap when expanding to other verticals.
     - The on-page chat is a SCRIPTED MOCK (see the demo widget section).
       There is no backend. Do not imply one.
-    - BOOKING_URL and the business phone are PLACEHOLDERS pending Will.
+    - BOOKING_URL is live (Cal.com). Business phone is live (Google Voice).
     SECURITY:
     - CSP + referrer policy are set via meta below. Headers that cannot be
       set via <meta> (X-Frame-Options, X-Content-Type-Options, etc.) are in
@@ -488,7 +488,7 @@
           <!-- /ROOFING -->
           <div class="contact">
             Reach me directly: <a href="mailto:will@craftagents.net">will@craftagents.net</a>
-            <!-- NEEDS WILL: business phone number to add here for stronger trust -->
+            &middot; <a href="tel:+15127637919">(512) 763-7919</a>
           </div>
         </div>
       </div>
@@ -542,11 +542,11 @@
   <script>
     // ============================================================
     // Booking link wiring
-    // BOOKING_URL is a PLACEHOLDER pending Will's Cal.com link.
-    // While it's unset, all "book" buttons fall back to the email link
+    // BOOKING_URL is Will's live Cal.com 10-min demo link.
+    // If ever unset, all "book" buttons fall back to the email link
     // (the mailto fallback is also shown visibly next to each button).
     // ============================================================
-    var BOOKING_URL = "REPLACE_WITH_CALCOM_LINK"; // NEEDS WILL: real Cal.com booking link
+    var BOOKING_URL = "https://cal.com/willgarza/10-minute-demo";
     var EMAIL_FALLBACK = "mailto:will@craftagents.net?subject=CraftAgents%20Demo";
 
     (function wireBooking() {
