@@ -1,0 +1,9 @@
+HOW WE HANDLE YOUR DATA (plain-English, reusable in sales conversations and on the site)
+
+Your customers' information belongs to you, full stop. When a homeowner chats with your
+assistant, their name and number go straight to you and nowhere else. We never sell, rent,
+or reuse your data or your customers' data. The only services that ever touch it are the ones
+needed to run the assistant, like the AI provider that powers the conversation and the secure
+tool that delivers the lead to you. You can ask us to delete any data at any time.
+
+(Kept in sync with the "How we handle your data" section on index.html and the privacy policy.)
