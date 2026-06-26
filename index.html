@@ -11,132 +11,164 @@
     CONVENTIONS:
     - Roofing-specific copy is wrapped in <!-- ROOFING: ... --> markers
       so it's easy to find and swap when expanding to other verticals.
-    - The on-page chat is a SCRIPTED MOCK (see the demo widget section).
-      There is no backend. Do not imply one.
+    - The on-page chat is LIVE. It calls the hosted backend
+      (roofing-chat-agent.onrender.com) configured as the FICTIONAL demo
+      company "Demo Roofing Co.". See the demo widget section.
     - BOOKING_URL is live (Cal.com). Business phone is live (Google Voice).
     SECURITY:
-    - CSP + referrer policy are set via meta below. Headers that cannot be
-      set via <meta> (X-Frame-Options, X-Content-Type-Options, etc.) are in
-      the Netlify `_headers` file at the repo root.
+    - CSP + referrer policy are set via meta below; the live demo backend is
+      allowlisted via connect-src. Headers that cannot be set via <meta>
+      (X-Frame-Options, X-Content-Type-Options, the authoritative CSP, etc.)
+      are in the Netlify `_headers` file at the repo root.
     ============================================================
   -->
 
   <!-- Security: Content Security Policy (meta-supported subset).
        'unsafe-inline' is required only because styles/scripts are inline in this
        v1. When we move CSS/JS to external files, tighten this to drop it. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; form-action 'self' mailto:; object-src 'none';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://roofing-chat-agent.onrender.com; form-action 'self' mailto:; object-src 'none';" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="theme-color" content="#0c0c0d" />
 
   <title>CraftAgents — Never Miss Another Roofing Lead</title>
   <meta name="description" content="CraftAgents builds a custom AI assistant for roofing contractors that answers homeowners 24/7 and texts every new lead straight to your phone, even after hours." />
 
   <style>
     :root {
-      --navy: #0f1c2e;
-      --navy-soft: #16263d;
-      --accent: #f6a623;
-      --accent-deep: #e0901a;
-      --text: #1e293b;
-      --muted: #5b6b7f;
-      --line: #e6eaf0;
-      --bg-soft: #f7f9fc;
+      --bg: #0c0c0d;
+      --surface: #151417;
+      --surface-2: #1d1c20;
+      --line: #2a292e;
+      --accent: #ff7a1a;
+      --accent-deep: #ff6300;
+      --accent-soft: rgba(255,122,26,0.12);
+      --accent-glow: rgba(255,122,26,0.22);
+      --text: #ededee;
+      --muted: #9a99a2;
+      --heading: #fafafa;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
-      color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased;
+      color: var(--text); line-height: 1.6; background: var(--bg); -webkit-font-smoothing: antialiased;
     }
     .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
     .narrow { max-width: 760px; }
+    ::selection { background: var(--accent); color: #0c0c0d; }
 
-    /* Nav */
-    nav { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; }
-    .logo { font-weight: 800; font-size: 22px; color: var(--navy); letter-spacing: -0.02em; }
+    /* Sticky header — keeps the CTA on screen the whole scroll */
+    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(12,12,13,0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+    .logo { font-weight: 800; font-size: 22px; color: var(--heading); letter-spacing: -0.02em; }
     .logo span { color: var(--accent); }
     .nav-cta {
-      background: var(--navy); color: #fff; text-decoration: none;
-      padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 15px; transition: background 0.15s;
+      background: var(--accent); color: #0c0c0d; text-decoration: none;
+      padding: 10px 20px; border-radius: 9px; font-weight: 700; font-size: 15px;
+      transition: transform 0.12s, box-shadow 0.2s, background 0.15s;
     }
-    .nav-cta:hover { background: var(--navy-soft); }
+    .nav-cta:hover { background: var(--accent-deep); transform: translateY(-1px); box-shadow: 0 8px 24px var(--accent-glow); }
 
     /* Hero */
-    .hero { background: linear-gradient(160deg, var(--navy) 0%, var(--navy-soft) 100%); color: #fff; padding: 92px 0 100px; text-align: center; }
-    .hero h1 { font-size: clamp(34px, 5vw, 56px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 22px; }
+    .hero { position: relative; overflow: hidden; background: radial-gradient(900px 420px at 50% -8%, rgba(255,122,26,0.16), transparent 60%), var(--bg); color: var(--text); padding: 104px 0 104px; text-align: center; }
+    .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--line), transparent); }
+    .hero h1 { font-size: clamp(36px, 5.4vw, 60px); font-weight: 800; color: var(--heading); letter-spacing: -0.035em; line-height: 1.05; margin-bottom: 22px; }
     .hero h1 .hl { color: var(--accent); }
-    .hero p { font-size: clamp(17px, 2vw, 20px); color: #c3cedd; max-width: 640px; margin: 0 auto 36px; }
-    .btn { display: inline-block; background: var(--accent); color: var(--navy); text-decoration: none; font-weight: 700; font-size: 17px; padding: 16px 34px; border-radius: 10px; transition: transform 0.12s, background 0.15s; border: none; cursor: pointer; }
-    .btn:hover { background: var(--accent-deep); transform: translateY(-1px); }
+    .hero p { font-size: clamp(17px, 2vw, 20px); color: var(--muted); max-width: 640px; margin: 0 auto 36px; }
+    .btn { position: relative; display: inline-block; background: var(--accent); color: #0c0c0d; text-decoration: none; font-weight: 700; font-size: 17px; padding: 16px 34px; border-radius: 11px; transition: transform 0.12s, box-shadow 0.2s, background 0.15s; border: none; cursor: pointer; }
+    .btn:hover { background: var(--accent-deep); transform: translateY(-2px); box-shadow: 0 12px 30px var(--accent-glow); }
     .cta-row { display: flex; gap: 18px; align-items: center; justify-content: center; flex-wrap: wrap; }
-    .cta-fallback { color: #c3cedd; font-size: 15px; }
+    .cta-fallback { color: var(--muted); font-size: 15px; }
     .cta-fallback a { color: var(--accent); }
-    .hero .sub { margin-top: 16px; font-size: 14px; color: #8ea0b8; }
+    .hero .sub { margin-top: 18px; font-size: 14px; color: #74737c; letter-spacing: 0.01em; }
 
     /* Sections */
-    section { padding: 84px 0; }
-    .eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 13px; font-weight: 700; color: var(--accent-deep); margin-bottom: 12px; text-align: center; }
-    .section-title { font-size: clamp(26px, 3.5vw, 38px); font-weight: 800; color: var(--navy); text-align: center; letter-spacing: -0.02em; margin-bottom: 14px; }
+    section { padding: 88px 0; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 12px; text-align: center; }
+    .section-title { font-size: clamp(26px, 3.5vw, 38px); font-weight: 800; color: var(--heading); text-align: center; letter-spacing: -0.025em; margin-bottom: 14px; }
     .section-lead { text-align: center; color: var(--muted); max-width: 600px; margin: 0 auto 56px; font-size: 18px; }
 
     /* Pain / cost section */
-    .pain { background: var(--navy); color: #fff; }
-    .pain .section-title { color: #fff; }
-    .pain .section-lead { color: #c3cedd; }
-    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 40px; }
-    .stat { text-align: center; padding: 28px 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; }
-    .stat .big { font-size: 40px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
-    .stat .label { color: #c3cedd; font-size: 15px; margin-top: 6px; }
-    .pain-note { text-align: center; color: #c3cedd; max-width: 660px; margin: 0 auto; font-size: 17px; }
+    .pain { background: linear-gradient(180deg, var(--surface), var(--bg)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .pain .section-title { color: var(--heading); }
+    .pain .section-lead { color: var(--muted); }
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+    .stat { text-align: center; padding: 30px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; transition: border-color 0.2s, transform 0.2s; }
+    .stat:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .stat .big { font-size: 42px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
+    .stat .label { color: var(--muted); font-size: 15px; margin-top: 6px; }
+    .pain-note { text-align: center; color: var(--muted); max-width: 660px; margin: 0 auto; font-size: 17px; }
 
     /* Value cards */
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-    .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 32px 28px; transition: box-shadow 0.18s, transform 0.18s; }
-    .card:hover { box-shadow: 0 12px 32px rgba(15,28,46,0.08); transform: translateY(-3px); }
-    .card .icon { width: 46px; height: 46px; border-radius: 10px; background: rgba(246,166,35,0.14); color: var(--accent-deep); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; }
-    .card h3 { font-size: 19px; color: var(--navy); margin-bottom: 8px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 32px 28px; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+    .card:hover { border-color: var(--accent); box-shadow: 0 16px 40px rgba(0,0,0,0.4); transform: translateY(-4px); }
+    .card .icon { width: 48px; height: 48px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; }
+    .card h3 { font-size: 19px; color: var(--heading); margin-bottom: 8px; }
     .card p { color: var(--muted); font-size: 15.5px; }
 
     /* How it works */
-    .how { background: var(--bg-soft); }
+    .how { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
     .step { text-align: center; padding: 0 8px; }
-    .step .num { width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: #fff; font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
-    .step h3 { font-size: 18px; color: var(--navy); margin-bottom: 8px; }
+    .step .num { width: 46px; height: 46px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+    .step h3 { font-size: 18px; color: var(--heading); margin-bottom: 8px; }
     .step p { color: var(--muted); font-size: 15.5px; }
 
     /* Data handling */
-    .data-blurb { background: var(--bg-soft); }
-    .data-card { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 12px; padding: 32px 34px; max-width: 760px; margin: 0 auto; }
+    .data-blurb { background: var(--bg); }
+    .data-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 14px; padding: 32px 34px; max-width: 760px; margin: 0 auto; }
     .data-card p { color: var(--text); font-size: 17px; }
-    .data-card a { color: var(--accent-deep); }
+    .data-card a { color: var(--accent); }
 
     /* CTA band */
-    .cta-band { background: var(--navy); color: #fff; text-align: center; }
-    .cta-band h2 { font-size: clamp(26px, 3.5vw, 38px); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; }
-    .cta-band p { color: #c3cedd; font-size: 18px; max-width: 540px; margin: 0 auto 34px; }
+    .cta-band { background: radial-gradient(700px 300px at 50% 120%, rgba(255,122,26,0.18), transparent 60%), var(--surface); border-top: 1px solid var(--line); text-align: center; }
+    .cta-band h2 { font-size: clamp(26px, 3.5vw, 38px); font-weight: 800; color: var(--heading); letter-spacing: -0.025em; margin-bottom: 16px; }
+    .cta-band p { color: var(--muted); font-size: 18px; max-width: 540px; margin: 0 auto 34px; }
 
     /* Footer */
-    footer { padding: 40px 0; border-top: 1px solid var(--line); }
+    footer { padding: 40px 0; border-top: 1px solid var(--line); background: var(--bg); }
     .foot-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .foot-inner .logo { font-size: 18px; }
     footer a { color: var(--muted); text-decoration: none; font-size: 15px; }
-    footer a:hover { color: var(--navy); }
-    .foot-meta { color: #9aa7b6; font-size: 14px; }
+    footer a:hover { color: var(--accent); }
+    .foot-meta { color: #74737c; font-size: 14px; }
+
+    /* Hero trust strip — FUD reduction right under the CTA */
+    .hero-trust { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: center; color: var(--muted); font-size: 14px; }
+    .hero-trust span { display: inline-flex; align-items: center; gap: 7px; }
+    .hero-trust span::before { content: "\2713"; color: var(--accent); font-weight: 800; }
+
+    /* Final CTA recap + reassurance */
+    .cta-recap { display: flex; flex-wrap: wrap; gap: 10px 26px; justify-content: center; max-width: 640px; margin: 0 auto 30px; color: var(--text); font-size: 15px; }
+    .cta-recap span { display: inline-flex; align-items: center; gap: 8px; }
+    .cta-recap span::before { content: "\2713"; color: var(--accent); font-weight: 800; }
+    .cta-reassure { margin-top: 18px; color: var(--muted); font-size: 14px; }
+
+    /* Scroll reveal — applied by JS so no-JS users always see content */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
 
     @media (max-width: 760px) {
       .cards, .steps, .stat-row { grid-template-columns: 1fr; }
       section { padding: 60px 0; }
-      .hero { padding: 70px 0 78px; }
+      .hero { padding: 76px 0 80px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="wrap">
-    <nav>
-      <div class="logo">Craft<span>Agents</span></div>
-      <a class="nav-cta js-book" href="#contact">Book a Demo</a>
-    </nav>
+  <div class="site-header">
+    <div class="wrap">
+      <nav>
+        <div class="logo">Craft<span>Agents</span></div>
+        <a class="nav-cta js-book" href="#contact">Book a Demo</a>
+      </nav>
+    </div>
   </div>
 
   <!-- ROOFING: hero headline + subhead -->
@@ -148,7 +180,11 @@
         <a class="btn js-book" href="#contact">Book a 10-minute demo</a>
         <span class="cta-fallback">or email <a href="mailto:will@craftagents.net?subject=CraftAgents%20Demo">will@craftagents.net</a></span>
       </div>
-      <div class="sub">No setup fee. No contract. First month free.</div>
+      <div class="hero-trust">
+        <span>First month free</span>
+        <span>No contract, cancel anytime</span>
+        <span>Built in Georgetown, TX</span>
+      </div>
     </div>
   </header>
   <!-- /ROOFING -->
@@ -207,33 +243,34 @@
     </div>
   </section>
 
-  <!-- ===== INTERACTIVE MOCK DEMO WIDGET =====
-       IMPORTANT: This is a SCRIPTED MOCK. There is NO backend and NO real AI here.
-       Answers come from the hard-coded ROOFING_SCRIPT object below. It exists only to
-       let a prospect feel what the product is like. When the real RAG agent + backend
-       exist, replace this whole block with the live widget.
-       Roofing-specific demo content is concentrated in ROOFING_SCRIPT (swap per vertical).
+  <!-- ===== INTERACTIVE LIVE DEMO WIDGET =====
+       This is the REAL agent. It calls the hosted backend
+       (roofing-chat-agent.onrender.com), configured as the fictional demo
+       company "Demo Roofing Co.". Swapping the demo persona is done on the
+       backend (config.py + knowledge_base.py), not here.
   -->
   <style>
-    .demo { background: #fff; }
-    .chat-card { max-width: 440px; margin: 0 auto; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 16px 40px rgba(15,28,46,0.10); display: flex; flex-direction: column; height: 540px; }
-    .chat-head { background: var(--navy); color: #fff; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
+    .demo { background: var(--bg); }
+    .chat-card { max-width: 440px; margin: 0 auto; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.5); display: flex; flex-direction: column; height: 540px; background: var(--surface); }
+    .chat-head { background: var(--surface-2); color: var(--heading); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
     .chat-head .who { font-weight: 700; font-size: 15px; }
-    .chat-head .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; background: var(--accent); color: var(--navy); font-weight: 800; padding: 3px 8px; border-radius: 6px; }
-    .chat-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: var(--bg-soft); }
+    .chat-head .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; background: var(--accent); color: #0c0c0d; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
+    .chat-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: var(--bg); }
     .msg { max-width: 82%; padding: 10px 14px; border-radius: 16px; font-size: 14.5px; line-height: 1.45; white-space: pre-wrap; word-wrap: break-word; }
-    .msg.bot { background: #fff; border: 1px solid var(--line); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; }
-    .msg.user { background: var(--navy); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .msg.bot { background: var(--surface-2); border: 1px solid var(--line); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg.user { background: var(--accent); color: #0c0c0d; font-weight: 500; align-self: flex-end; border-bottom-right-radius: 4px; }
     .msg.typing { color: var(--muted); font-style: italic; }
-    .lead-card { align-self: flex-start; max-width: 90%; background: rgba(246,166,35,0.12); border: 1px solid var(--accent); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; color: var(--text); }
-    .lead-card strong { color: var(--accent-deep); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+    .lead-card { align-self: flex-start; max-width: 90%; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; color: var(--text); }
+    .lead-card strong { color: var(--accent); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 14px 0; }
-    .chip { background: #fff; border: 1px solid var(--line); color: var(--navy); border-radius: 20px; padding: 7px 13px; font-size: 13px; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
-    .chip:hover { border-color: var(--accent); background: rgba(246,166,35,0.08); }
-    .chat-input-row { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); background: #fff; }
-    .chat-input-row input { flex: 1; border: 1px solid #cbd5e1; border-radius: 8px; padding: 9px 12px; font-size: 14px; outline: none; font-family: inherit; }
+    .chip { background: var(--surface-2); border: 1px solid var(--line); color: var(--text); border-radius: 20px; padding: 7px 13px; font-size: 13px; cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+    .chip:hover { border-color: var(--accent); color: var(--accent); }
+    .chat-input-row { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); background: var(--surface); }
+    .chat-input-row input { flex: 1; border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 8px; padding: 9px 12px; font-size: 14px; outline: none; font-family: inherit; }
+    .chat-input-row input::placeholder { color: #6f6e77; }
     .chat-input-row input:focus { border-color: var(--accent); }
-    .chat-input-row button { background: var(--accent); color: var(--navy); border: none; border-radius: 8px; padding: 9px 16px; font-weight: 700; font-size: 14px; cursor: pointer; }
+    .chat-input-row button { background: var(--accent); color: #0c0c0d; border: none; border-radius: 8px; padding: 9px 16px; font-weight: 700; font-size: 14px; cursor: pointer; transition: background 0.15s; }
+    .chat-input-row button:hover { background: var(--accent-deep); }
     .demo-disclaimer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 18px; }
   </style>
 
@@ -245,7 +282,7 @@
 
       <div class="chat-card" role="region" aria-label="Demo chat">
         <div class="chat-head">
-          <span class="who">Lone Star Roofing &middot; Assistant</span>
+          <span class="who">Demo Roofing Co. &middot; Assistant</span>
           <span class="tag">Demo</span>
         </div>
         <div class="chat-body" id="chatBody" aria-live="polite"></div>
@@ -255,45 +292,32 @@
           <button type="submit">Send</button>
         </form>
       </div>
-      <p class="demo-disclaimer">This is a scripted demo. Your real assistant answers from your actual business info.</p>
+      <p class="demo-disclaimer">This is a live demo. "Demo Roofing Co." is a sample company. Your assistant answers from your real business info.</p>
     </div>
   </section>
 
   <script>
     // ============================================================
-    // MOCK DEMO WIDGET LOGIC  (SCRIPTED — NO BACKEND, NO REAL AI)
-    // All answers are hard-coded. Replace with the live agent later.
-    // Roofing-specific demo content lives in ROOFING_SCRIPT (swap per vertical).
+    // LIVE DEMO WIDGET — talks to the real CraftAgents backend.
+    // Answers come from the hosted agent (server.py), configured as the
+    // FICTIONAL "Demo Roofing Co." demo company. All visitor + model text is
+    // rendered via textContent (never innerHTML), so it stays XSS-safe.
+    // The backend enforces rate limiting + input validation server-side.
     // ============================================================
     (function () {
-      // ROOFING: scripted preset questions + answers, and keyword fallbacks.
-      var ROOFING_SCRIPT = {
-        presets: [
-          { q: "Do you do metal roofs in Round Rock?", a: "Yes. We install standing-seam and metal shingle roofs across Round Rock, Georgetown, and the greater Austin area. Want me to set up a free inspection?" },
-          { q: "How fast can you inspect storm damage?", a: "Usually within 24 hours of your call, and we prioritize damage inspections after a big hail storm. Want the team to reach out?" },
-          { q: "Do you help with insurance claims?", a: "We do. We document the damage and work directly with your insurance through the whole claim, so many homeowners get covered with little out of pocket." },
-          { q: "I need a free quote", a: "Happy to set that up. What's your name and the best number to reach you?", capture: true }
-        ],
-        // simple keyword fallbacks for typed input
-        keywords: [
-          { match: ["metal", "shingle", "standing seam"], a: "Yes, we install both metal and shingle roofs. Want a free inspection to talk options?" },
-          { match: ["storm", "hail", "damage", "leak"], a: "Sorry to hear that. We can usually inspect storm or hail damage within 24 hours. Want me to grab your info so the team can reach out?" },
-          { match: ["insurance", "claim"], a: "We work directly with your insurance and document everything for the claim. Want to get an inspection on the calendar?" },
-          { match: ["cost", "price", "much", "estimate", "quote"], a: "Every roof is different, so we give a free inspection and an exact quote, no guessing. Want one scheduled?" },
-          { match: ["area", "round rock", "georgetown", "austin", "cedar park", "where"], a: "We serve Round Rock, Georgetown, Cedar Park, and the greater Austin area. Are you in that area?" }
-        ],
-        fallback: "Good question. On your real site, I'd answer that straight from your business's info. This is just a quick demo, want to see the full thing? Book a 10-minute demo at the top of the page.",
-        captureFollowup: "Got it. In the real version, that lead would be texted to the roofer the second you send it, so they can call you right back. Here's what they'd receive:"
-      };
+      var BACKEND = "https://roofing-chat-agent.onrender.com";
 
-      var body = document.getElementById("chatBody");
-      var chips = document.getElementById("chatChips");
-      var form = document.getElementById("chatForm");
-      var input = document.getElementById("chatInput");
-      var captureMode = false;
+      var body    = document.getElementById("chatBody");
+      var chips   = document.getElementById("chatChips");
+      var form    = document.getElementById("chatForm");
+      var input   = document.getElementById("chatInput");
+      var sendBtn = form.querySelector("button[type=submit]");
 
-      // Render a message. ALL text is set via textContent (never innerHTML),
-      // so anything a visitor types is treated as plain text — XSS-safe.
+      var history    = [];    // full conversation, sent to the backend each turn
+      var busy       = false; // prevents overlapping requests
+      var firstReply = true;  // first call may cold-start the free server
+
+      // Render a message. textContent only — visitor + model text stays plain text.
       function addMsg(text, who) {
         var div = document.createElement("div");
         div.className = "msg " + who;
@@ -303,74 +327,79 @@
         return div;
       }
 
-      function botReply(text, after) {
-        var typing = addMsg("typing…", "bot typing");
-        setTimeout(function () {
-          body.removeChild(typing);
-          addMsg(text, "bot");
-          if (typeof after === "function") after();
-        }, 600);
+      // Small "lead captured" confirmation. The backend only reports a boolean,
+      // so we show the payoff without echoing any contact details.
+      function showLeadCard() {
+        var card = document.createElement("div");
+        card.className = "lead-card";
+        var label = document.createElement("strong");
+        label.textContent = "Lead captured";
+        var detail = document.createElement("div");
+        detail.textContent = "On your real site, a captured lead texts straight to your phone the second it comes in.";
+        card.appendChild(label);
+        card.appendChild(detail);
+        body.appendChild(card);
+        body.scrollTop = body.scrollHeight;
       }
 
-      // Shows a "what the roofer receives" card after a capture. Visitor-supplied
-      // contact text is rendered via textContent inside the card (XSS-safe).
-      function showLeadCard(contact) {
-        botReply(ROOFING_SCRIPT.captureFollowup, function () {
-          var card = document.createElement("div");
-          card.className = "lead-card";
-          var label = document.createElement("strong");
-          label.textContent = "New lead — Lone Star Roofing";
-          var detail = document.createElement("div");
-          detail.textContent = contact; // visitor input, safely rendered
-          card.appendChild(label);
-          card.appendChild(detail);
-          body.appendChild(card);
-          body.scrollTop = body.scrollHeight;
-        });
+      function setBusy(state) {
+        busy = state;
+        input.disabled = state;
+        if (sendBtn) sendBtn.disabled = state;
       }
 
-      function answerFor(textRaw) {
-        var text = textRaw.toLowerCase();
-        for (var i = 0; i < ROOFING_SCRIPT.keywords.length; i++) {
-          var k = ROOFING_SCRIPT.keywords[i];
-          for (var j = 0; j < k.match.length; j++) {
-            if (text.indexOf(k.match[j]) !== -1) return k.a;
-          }
-        }
-        return ROOFING_SCRIPT.fallback;
-      }
-
-      function handleUserText(raw) {
-        // Input validation: trim, ignore empty, cap length (defense in depth;
-        // the input also has maxlength=200).
-        var text = (raw || "").trim();
-        if (!text) return;
+      async function send(text) {
+        // Input validation: trim, ignore empty, hard cap length (defense in
+        // depth; input has maxlength=200, the backend caps at 4000).
+        text = (text || "").trim();
+        if (!text || busy) return;
         if (text.length > 200) text = text.slice(0, 200);
 
         addMsg(text, "user");
+        history.push({ role: "user", content: text });
+        setBusy(true);
 
-        if (captureMode) {
-          captureMode = false;
-          showLeadCard(text);
-          return;
+        var typing = addMsg("typing…", "bot typing");
+        // The free demo server sleeps when idle; warn if the first reply is slow.
+        var slow = setTimeout(function () {
+          if (firstReply) typing.textContent = "waking the demo server, one sec…";
+        }, 3000);
+
+        try {
+          var res = await fetch(BACKEND + "/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ history: history })
+          });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          var data = await res.json();
+          clearTimeout(slow);
+          body.removeChild(typing);
+          firstReply = false;
+          addMsg(data.reply, "bot");
+          history.push({ role: "assistant", content: data.reply });
+          if (data.lead_captured) showLeadCard();
+        } catch (err) {
+          clearTimeout(slow);
+          if (typing.parentNode) body.removeChild(typing);
+          addMsg("Sorry, the demo had a hiccup. Give it another try, or just book a 10-minute demo at the top of the page.", "bot");
+          history.pop(); // drop the failed user turn so history stays valid
+        } finally {
+          setBusy(false);
+          input.focus();
         }
-        botReply(answerFor(text));
       }
 
-      // Build preset chips
-      ROOFING_SCRIPT.presets.forEach(function (p) {
+      // Starter-question chips (send straight to the live agent)
+      ["Do you do metal roofs in Round Rock?",
+       "How fast can you inspect storm damage?",
+       "Do you help with insurance claims?",
+       "I need a free quote"].forEach(function (q) {
         var b = document.createElement("button");
         b.type = "button";
         b.className = "chip";
-        b.textContent = p.q;
-        b.addEventListener("click", function () {
-          addMsg(p.q, "user");
-          if (p.capture) {
-            botReply(p.a, function () { captureMode = true; });
-          } else {
-            botReply(p.a);
-          }
-        });
+        b.textContent = q;
+        b.addEventListener("click", function () { send(q); });
         chips.appendChild(b);
       });
 
@@ -378,14 +407,14 @@
         e.preventDefault();
         var val = input.value;
         input.value = "";
-        handleUserText(val);
+        send(val);
       });
 
       // Opening greeting
-      addMsg("Hi! I'm Lone Star Roofing's assistant. Storm damage, metal roofs, insurance claims, ask me anything, or tap a question below.", "bot");
+      addMsg("Hi! I'm the assistant for Demo Roofing Co., a sample roofing company. Ask me about storm damage, metal roofs, insurance claims, or a free quote — or tap a question below.", "bot");
     })();
   </script>
-  <!-- ===== /MOCK DEMO WIDGET ===== -->
+  <!-- ===== /LIVE DEMO WIDGET ===== -->
 
   <!-- ===== HOW IT WORKS ===== -->
   <section class="how">
@@ -414,25 +443,77 @@
     </div>
   </section>
 
+  <!-- ===== OLD WAY vs CRAFTAGENTS (differentiator / contrast) ===== -->
+  <style>
+    .compare { background: var(--bg); }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 880px; margin: 0 auto; }
+    .compare-col { border: 1px solid var(--line); border-radius: 16px; padding: 30px 28px; background: var(--surface); }
+    .compare-col.new { border-color: var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.35); background: linear-gradient(180deg, rgba(255,122,26,0.06), var(--surface)); }
+    .compare-col h3 { font-size: 18px; margin-bottom: 20px; color: var(--heading); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .compare-col .tagk { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 6px; }
+    .compare-col.old .tagk { background: var(--surface-2); color: var(--muted); }
+    .compare-col.new .tagk { background: var(--accent); color: #0c0c0d; }
+    .compare-col ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .compare-col li { position: relative; padding-left: 30px; color: var(--text); font-size: 15.5px; line-height: 1.5; }
+    .compare-col li::before { position: absolute; left: 0; top: 0; font-weight: 800; }
+    .compare-col.old li { color: var(--muted); }
+    .compare-col.old li::before { content: "\2715"; color: #7a7a82; }
+    .compare-col.new li::before { content: "\2713"; color: var(--accent); }
+    @media (max-width: 760px) { .compare-grid { grid-template-columns: 1fr; } }
+  </style>
+
+  <section class="compare">
+    <div class="wrap">
+      <div class="eyebrow">Why it works</div>
+      <!-- ROOFING: old-way vs CraftAgents contrast -->
+      <h2 class="section-title">Your website is either your hardest-working salesman or your laziest</h2>
+      <p class="section-lead">Here's what happens to an after-hours lead today, next to what happens with an assistant on the page.</p>
+      <div class="compare-grid">
+        <div class="compare-col old">
+          <h3><span class="tagk">Without it</span> The old way</h3>
+          <ul>
+            <li>After-hours calls and form fills hit voicemail or an empty inbox.</li>
+            <li>The homeowner doesn't wait. They call the next roofer on Google.</li>
+            <li>You hear about the lead days later, if you hear about it at all.</li>
+            <li>A receptionist or answering service costs more and still clocks out at 5.</li>
+            <li>Your site looks nice but does nothing while you sleep.</li>
+          </ul>
+        </div>
+        <div class="compare-col new">
+          <h3><span class="tagk">With CraftAgents</span> The new way</h3>
+          <ul>
+            <li>Every visitor gets an instant answer. Day, night, weekend, holiday.</li>
+            <li>Their name and number hit your phone the second they're interested.</li>
+            <li>It already knows your services, your service area, and your warranties.</li>
+            <li>One flat rate. No per-lead fees, no hourly wages, no extra staff.</li>
+            <li>Your website finally works the night shift for you.</li>
+          </ul>
+        </div>
+      </div>
+      <!-- /ROOFING -->
+    </div>
+  </section>
+
   <!-- ===== FAQ + FOUNDER / TRUST ===== -->
   <style>
     .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
-    .faq-item { border: 1px solid var(--line); border-radius: 12px; background: #fff; overflow: hidden; }
-    .faq-item summary { list-style: none; cursor: pointer; padding: 18px 22px; font-weight: 700; color: var(--navy); font-size: 16.5px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .faq-item { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); overflow: hidden; transition: border-color 0.2s; }
+    .faq-item[open] { border-color: var(--accent); }
+    .faq-item summary { list-style: none; cursor: pointer; padding: 18px 22px; font-weight: 700; color: var(--heading); font-size: 16.5px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary::after { content: "+"; color: var(--accent-deep); font-size: 22px; font-weight: 700; line-height: 1; }
+    .faq-item summary::after { content: "+"; color: var(--accent); font-size: 22px; font-weight: 700; line-height: 1; }
     .faq-item[open] summary::after { content: "\2013"; }
     .faq-item .faq-a { padding: 0 22px 20px; color: var(--muted); font-size: 15.5px; }
-    .faq-item .faq-a a { color: var(--accent-deep); }
+    .faq-item .faq-a a { color: var(--accent); }
 
-    .founder { background: var(--bg-soft); }
-    .founder-card { max-width: 760px; margin: 0 auto; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 34px 36px; display: flex; gap: 26px; align-items: flex-start; }
-    .avatar { flex-shrink: 0; width: 64px; height: 64px; border-radius: 50%; background: var(--navy); color: var(--accent); font-weight: 800; font-size: 22px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.02em; }
-    .founder-text h3 { color: var(--navy); font-size: 20px; margin-bottom: 4px; }
-    .founder-text .role { color: var(--accent-deep); font-weight: 600; font-size: 14px; margin-bottom: 12px; }
+    .founder { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .founder-card { max-width: 760px; margin: 0 auto; background: var(--bg); border: 1px solid var(--line); border-radius: 18px; padding: 34px 36px; display: flex; gap: 26px; align-items: flex-start; }
+    .avatar { flex-shrink: 0; width: 64px; height: 64px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); font-weight: 800; font-size: 22px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.02em; }
+    .founder-text h3 { color: var(--heading); font-size: 20px; margin-bottom: 4px; }
+    .founder-text .role { color: var(--accent); font-weight: 600; font-size: 14px; margin-bottom: 12px; }
     .founder-text p { color: var(--text); font-size: 16px; margin-bottom: 12px; }
     .founder-text .contact { color: var(--muted); font-size: 14.5px; }
-    .founder-text .contact a { color: var(--accent-deep); }
+    .founder-text .contact a { color: var(--accent); }
     .trust-strip { max-width: 760px; margin: 28px auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; color: var(--muted); font-size: 14.5px; }
     .trust-strip span { display: inline-flex; align-items: center; gap: 8px; }
     .trust-strip .dot { color: var(--accent); font-weight: 800; }
@@ -522,11 +603,17 @@
       <!-- ROOFING: closing CTA -->
       <h2>See it answer a hail-damage call at 9pm</h2>
       <p>Ten minutes, no pressure. If it doesn't bring you leads, you pay nothing and walk away.</p>
+      <div class="cta-recap">
+        <span>Answers homeowners 24/7</span>
+        <span>Texts every lead to your phone</span>
+        <span>Live on your site in about 10 minutes</span>
+      </div>
       <!-- /ROOFING -->
       <div class="cta-row">
         <a class="btn js-book" href="mailto:will@craftagents.net?subject=CraftAgents%20Demo">Book a 10-minute demo</a>
         <span class="cta-fallback">or email <a href="mailto:will@craftagents.net?subject=CraftAgents%20Demo">will@craftagents.net</a></span>
       </div>
+      <div class="cta-reassure">First month free &middot; No setup fee &middot; No contract</div>
     </div>
   </section>
 
@@ -559,6 +646,25 @@
           buttons[i].setAttribute("rel", "noopener");
         }
       }
+    })();
+  </script>
+
+  <script>
+    // ============================================================
+    // Scroll reveal — gentle fade/slide-up as sections enter view.
+    // The hidden state is added by JS, so if JS is off or unsupported
+    // everything is visible. Skipped entirely for reduced-motion users.
+    // ============================================================
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!("IntersectionObserver" in window)) return;
+      var els = document.querySelectorAll("section, .hero");
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      els.forEach(function (el) { el.classList.add("reveal"); io.observe(el); });
     })();
   </script>
 
