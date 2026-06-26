@@ -4,28 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!--
-    ============================================================
-    CraftAgents marketing site — v1
-    ============================================================
-    CONVENTIONS:
-    - Roofing-specific copy is wrapped in <!-- ROOFING: ... --> markers
-      so it's easy to find and swap when expanding to other verticals.
-    - The on-page chat is LIVE. It calls the hosted backend
-      (roofing-chat-agent.onrender.com) configured as the FICTIONAL demo
-      company "Demo Roofing Co.". See the demo widget section.
-    - BOOKING_URL is live (Cal.com). Business phone is live (Google Voice).
-    SECURITY:
-    - CSP + referrer policy are set via meta below; the live demo backend is
-      allowlisted via connect-src. Headers that cannot be set via <meta>
-      (X-Frame-Options, X-Content-Type-Options, the authoritative CSP, etc.)
-      are in the Netlify `_headers` file at the repo root.
-    ============================================================
-  -->
-
-  <!-- Security: Content Security Policy (meta-supported subset).
-       'unsafe-inline' is required only because styles/scripts are inline in this
-       v1. When we move CSS/JS to external files, tighten this to drop it. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://roofing-chat-agent.onrender.com; form-action 'self' mailto:; object-src 'none';" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="theme-color" content="#0c0c0d" />
