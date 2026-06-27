@@ -289,6 +289,7 @@
       var history    = [];    // full conversation, sent to the backend each turn
       var busy       = false; // prevents overlapping requests
       var firstReply = true;  // first call may cold-start the free server
+      var leadShown  = false; // latch: only ever show the lead card once
 
       // Render a message. textContent only — visitor + model text stays plain text.
       function addMsg(text, who) {
@@ -321,6 +322,29 @@
         if (sendBtn) sendBtn.disabled = state;
       }
 
+      // POST to the backend. The free demo server can return a 502/timeout on
+      // the very first hit while it wakes from sleep, so retry once (after a
+      // short pause) before giving up. Keep-alive usually prevents this anyway.
+      async function postChat(hist) {
+        for (var attempt = 0; attempt < 2; attempt++) {
+          try {
+            var res = await fetch(BACKEND + "/chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ history: hist })
+            });
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            return await res.json();
+          } catch (e) {
+            if (attempt === 0) {
+              await new Promise(function (r) { setTimeout(r, 2500); });
+              continue; // one retry, in case the dyno was still waking
+            }
+            throw e;
+          }
+        }
+      }
+
       async function send(text) {
         // Input validation: trim, ignore empty, hard cap length (defense in
         // depth; input has maxlength=200, the backend caps at 4000).
@@ -339,19 +363,13 @@
         }, 3000);
 
         try {
-          var res = await fetch(BACKEND + "/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ history: history })
-          });
-          if (!res.ok) throw new Error("HTTP " + res.status);
-          var data = await res.json();
+          var data = await postChat(history);
           clearTimeout(slow);
           body.removeChild(typing);
           firstReply = false;
           addMsg(data.reply, "bot");
           history.push({ role: "assistant", content: data.reply });
-          if (data.lead_captured) showLeadCard();
+          if (data.lead_captured && !leadShown) { leadShown = true; showLeadCard(); }
         } catch (err) {
           clearTimeout(slow);
           if (typing.parentNode) body.removeChild(typing);
