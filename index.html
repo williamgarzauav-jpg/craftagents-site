@@ -331,7 +331,9 @@
             var res = await fetch(BACKEND + "/chat", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ history: hist })
+              // already_captured tells the backend to skip duplicate save/email
+              // if the model re-emits the token after a lead is in.
+              body: JSON.stringify({ history: hist, already_captured: leadShown })
             });
             if (!res.ok) throw new Error("HTTP " + res.status);
             return await res.json();
